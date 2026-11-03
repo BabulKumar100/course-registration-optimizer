@@ -1,0 +1,1 @@
+loadScenario('default');

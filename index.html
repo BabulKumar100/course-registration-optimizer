@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Course Registration Optimizer</title>
+<meta name="description" content="Greedy allocation, backtracking search and a timetable conflict graph for course registration.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/navigation.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/forms.css">
+<link rel="stylesheet" href="css/courses.css">
+<link rel="stylesheet" href="css/results.css">
+<link rel="stylesheet" href="css/charts.css">
+<link rel="stylesheet" href="css/graph.css">
+</head>
+<body>
+<div class="bg" aria-hidden="true"><i class="b1"></i><i class="b2"></i><i class="b3"></i></div>
+<div class="app">
+  <header class="top glass">
+    <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#14b8c4"/><stop offset="1" stop-color="#6250d6"/></linearGradient></defs>
+      <rect width="48" height="48" rx="14" fill="url(#lg)"/>
+      <g stroke="#fff" stroke-width="2.2" stroke-linecap="round" opacity=".9"><path d="M14 17 L34 14 M14 17 L22 33 M34 14 L22 33 M34 14 L35 32"/></g>
+      <g fill="#fff"><circle cx="14" cy="17" r="4.2"/><circle cx="34" cy="14" r="4.2"/><circle cx="22" cy="33" r="4.2"/><circle cx="35" cy="32" r="3.4" opacity=".7"/></g>
+    </svg>
+    <div class="titles">
+      <h1>Course Registration Optimizer</h1>
+      <p>Greedy allocation, backtracking search and a timetable conflict graph. Design and Analysis of Algorithms.</p>
+    </div>
+    <button class="iconbtn" id="themeBtn" type="button" aria-pressed="false"></button>
+  </header>
+
+  <nav class="tabs glass" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="t-planner" aria-selected="true" aria-controls="v-planner" data-tab="planner">Planner</button>
+    <button class="tab" role="tab" id="t-graph" aria-selected="false" aria-controls="v-graph" data-tab="graph">Conflict graph</button>
+    <button class="tab" role="tab" id="t-batch" aria-selected="false" aria-controls="v-batch" data-tab="batch">Batch simulation</button>
+    <button class="tab" role="tab" id="t-analysis" aria-selected="false" aria-controls="v-analysis" data-tab="analysis">Analysis</button>
+  </nav>
+
+  <main>
+    <!-- PLANNER -->
+    <section class="view" id="v-planner" role="tabpanel" aria-labelledby="t-planner">
+      <div class="planner">
+        <div class="col">
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow">Step 1</div><h2>Student and rules</h2></div>
+              <button class="btn ghost" id="resetBtn" type="button">Reset scenario</button></div>
+            <div class="grid-fields">
+              <div class="field" style="grid-column:1/-1"><label for="scenario">Scenario</label>
+                <select id="scenario">
+                  <option value="default">Autumn semester, 8 offerings</option>
+                  <option value="ppt">Presentation example, conflict detection</option>
+                  <option value="dry">Report dry run, 3 requests</option>
+                </select></div>
+              <div class="field"><label for="minCr">Minimum credits</label><input type="number" id="minCr" min="0" max="30" step="1"></div>
+              <div class="field"><label for="maxCr">Maximum credits</label><input type="number" id="maxCr" min="1" max="30" step="1"></div>
+              <div class="field" style="grid-column:1/-1"><label for="objective">Backtracking maximises</label>
+                <select id="objective"><option value="score">Total priority score</option><option value="credits">Total credits</option></select></div>
+              <div class="field"><label for="todPref">Time of day preference</label>
+                <select id="todPref"><option value="none">No preference</option><option value="am">Prefer mornings</option><option value="pm">Prefer afternoons</option></select></div>
+              <div class="field"><label for="freeDay">Keep this day free</label>
+                <select id="freeDay"><option value="-1">No day</option><option value="0">Monday</option><option value="1">Tuesday</option><option value="2">Wednesday</option><option value="3">Thursday</option><option value="4">Friday</option></select></div>
+              <p class="sub" style="grid-column:1/-1;margin:0">Preferences nudge priorities by 8 points for time of day and 15 points for a day you want free. Prerequisites, credits, clashes and seats are never relaxed.</p>
+            </div>
+            <div style="margin-top:14px"><div class="lbl" style="margin-bottom:7px" id="doneLbl">Completed courses (unlock prerequisites)</div>
+              <div class="chips" id="doneChips" role="group" aria-labelledby="doneLbl"></div></div>
+            <div style="margin-top:14px"><label class="switch"><input type="checkbox" id="waitlist" checked><span class="tr"></span>Waitlist full sections</label></div>
+          </div>
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow">Step 2</div><h2>Course requests</h2>
+              <p class="sub">Tick what you want, set seats left and a priority. Results update as you type.</p></div></div>
+            <div class="rows" id="rows"></div>
+            <details class="addc" id="addc"><summary>Add your own course</summary>
+              <form id="addForm" autocomplete="off">
+                <div class="grid-fields">
+                  <div class="field"><label for="ac-code">Code</label><input type="text" id="ac-code" placeholder="CS501" maxlength="8"></div>
+                  <div class="field"><label for="ac-name">Name</label><input type="text" id="ac-name" placeholder="Cloud Computing" maxlength="28"></div>
+                  <div class="field"><label for="ac-cr">Credits</label><input type="number" id="ac-cr" min="1" max="6" value="3"></div>
+                  <div class="field"><label for="ac-seats">Seats left</label><input type="number" id="ac-seats" min="0" max="999" value="20"></div>
+                  <div class="field" style="grid-column:1/-1"><label for="ac-pre">Prerequisites (codes separated by commas)</label><input type="text" id="ac-pre" placeholder="CS201, MA201"></div>
+                </div>
+                <div class="lbl" style="margin:12px 0 6px">Meetings, 24 hour clock (half hours allowed, e.g. 10.5)</div>
+                <div class="mrow"><select id="ac-d1" aria-label="Day of first meeting"></select><input type="number" id="ac-s1" min="7" max="20" step="0.5" value="9" aria-label="First meeting start"><span>to</span><input type="number" id="ac-e1" min="7" max="20" step="0.5" value="10" aria-label="First meeting end"></div>
+                <div class="mrow"><select id="ac-d2" aria-label="Day of second meeting"></select><input type="number" id="ac-s2" min="7" max="20" step="0.5" value="9" aria-label="Second meeting start"><span>to</span><input type="number" id="ac-e2" min="7" max="20" step="0.5" value="10" aria-label="Second meeting end"></div>
+                <p class="err" id="ac-err" role="alert" hidden></p>
+                <button class="btn" type="submit" style="margin-top:12px">Add course</button>
+              </form>
+            </details>
+          </div>
+        </div>
+
+        <div class="col">
+          <div class="glass card" id="summaryCard">
+            <div class="head"><div><div class="eyebrow">Result</div><h2 id="sumTitle">Recommended schedule</h2></div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><button class="btn ghost" id="copyBtn" type="button">Copy plan</button><div class="seg" role="group" aria-label="Algorithm shown"><button type="button" data-view="greedy" aria-pressed="true">Greedy</button><button type="button" data-view="bt" aria-pressed="false">Backtracking</button></div></div></div>
+            <div id="copyBox" hidden></div>
+            <div id="summary"></div>
+          </div>
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow">Weekly view</div><h2>Timetable</h2></div></div>
+            <div class="ttwrap"><div id="tt"></div></div>
+          </div>
+          <div class="two">
+            <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Compare</div><h3>Greedy vs backtracking</h3></div></div><div id="cmp"></div></div>
+            <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Load</div><h3>Class hours per day</h3></div></div><div id="hours"></div></div>
+          </div>
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow">Recommendations</div><h2>Best feasible combinations</h2>
+              <p class="sub">Every valid combination under your rules, ranked. Preview one to see it on the timetable and the conflict graph.</p></div></div>
+            <div id="combos"></div>
+          </div>
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow">Workflow</div><h2>How the requests moved through the pipeline</h2>
+              <p class="sub">The seven steps of the proposed system, with live counts from the greedy run.</p></div></div>
+            <ol class="pipe" id="pipe"></ol>
+          </div>
+          <div class="glass card">
+            <div class="head"><div><div class="eyebrow" id="decEy">Decisions</div><h2>Why each course was accepted or not</h2></div></div>
+            <ol class="dec" id="dec"></ol>
+          </div>
+          <div class="glass card" id="replayCard">
+            <div class="head"><div><div class="eyebrow">Backtracking replay</div><h2>Watch the search, move by move</h2>
+              <p class="sub">Each step takes a course, skips it, undoes a choice, or prunes a branch that cannot beat the best plan found so far.</p></div>
+              <div style="display:flex;gap:8px"><button class="btn ghost" id="rpPrev" type="button">Back</button><button class="btn" id="rpPlay" type="button">Play</button><button class="btn ghost" id="rpNext" type="button">Step</button></div></div>
+            <div class="rpchips" id="rpChips"></div>
+            <input type="range" id="rpStep" min="0" max="0" value="0" aria-label="Search step" style="margin:14px 0 4px">
+            <div class="note" id="rpMsg" style="margin-top:8px"></div>
+            <div class="kpis" id="rpStats" style="margin-top:14px"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GRAPH -->
+    <section class="view" id="v-graph" role="tabpanel" aria-labelledby="t-graph" hidden>
+      <div class="graphwrap">
+        <div class="glass card">
+          <div class="head"><div><div class="eyebrow">Conflict graph model</div><h2>Nodes are courses, edges are time overlaps</h2>
+            <p class="sub">Drag nodes to rearrange. Click a node to add or drop that request. Hover to see its neighbours.</p></div>
+            <div class="seg" role="group" aria-label="Algorithm shown"><button type="button" data-view="greedy" aria-pressed="true">Greedy</button><button type="button" data-view="bt" aria-pressed="false">Backtracking</button></div></div>
+          <svg id="gsvg" viewBox="0 0 720 500" role="img" aria-label="Course conflict graph"></svg>
+          <div class="legend" id="glegend" style="margin-top:10px"></div>
+        </div>
+        <div class="col">
+          <div class="glass card"><div class="eyebrow">Graph facts</div><div id="gstats" style="margin-top:6px"></div></div>
+          <div class="glass card"><div class="eyebrow">Adjacency list</div><pre class="adj" id="adj" style="margin-top:8px"></pre></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BATCH -->
+    <section class="view" id="v-batch" role="tabpanel" aria-labelledby="t-batch" hidden>
+      <div class="col">
+        <div class="glass card">
+          <div class="head"><div><div class="eyebrow">GREEDY-REGISTER at scale</div><h2>Many students, shared seats</h2>
+            <p class="sub">All requests from all students go into one list sorted by priority. Each is checked in order against prerequisites, credit limit, timetable and seats.</p></div>
+            <button class="btn ghost" id="reroll" type="button">New random cohort</button></div>
+          <div class="sliders">
+            <div class="field"><div class="rowlbl"><label for="simN">Students</label><output id="simNo"></output></div><input type="range" id="simN" min="50" max="1500" step="50"></div>
+            <div class="field"><div class="rowlbl"><label for="simK">Requests per student</label><output id="simKo"></output></div><input type="range" id="simK" min="2" max="8" step="1"></div>
+            <div class="field"><div class="rowlbl"><label for="simC">Seats per section (base)</label><output id="simCo"></output></div><input type="range" id="simC" min="10" max="400" step="10"></div>
+          </div>
+        </div>
+        <div class="glass card"><div class="kpis" id="simKpi"></div></div>
+        <div class="two">
+          <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Outcome of every request</div><h3>What happened to the requests</h3></div></div><div id="simOut"></div><div id="simOutT"></div></div>
+          <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Seat contention</div><h3>Enrolled vs capacity</h3></div></div><div id="simSeat"></div><div id="simSeatT"></div></div>
+        </div>
+        <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Fairness, from the report's future scope</div><h3>Priority order vs round robin</h3>
+          <p class="sub">Round robin serves every student's best remaining request before anyone's second choice, so nobody is shut out by higher priorities elsewhere.</p></div></div>
+          <div class="legend" id="fairLg" style="margin-bottom:8px"></div><div class="three" id="simFair"></div><p class="sub" id="fairMsg" style="margin-top:12px"></p><div id="simFairT"></div></div>
+        <div class="glass card"><div class="head" style="margin-bottom:6px"><div><div class="eyebrow">Per student</div><h3>Credits each student ended up with</h3></div></div><div id="simHist"></div><div id="simHistT"></div></div>
+      </div>
+    </section>
+
+    <!-- ANALYSIS -->
+    <section class="view" id="v-analysis" role="tabpanel" aria-labelledby="t-analysis" hidden>
+      <div class="col">
+        <div class="glass card">
+          <div class="head"><div><div class="eyebrow">Measured in your browser</div><h2>Complexity and quality analysis</h2>
+            <p class="sub">Random instances for each size n. Greedy runs in near linear time, backtracking explores far fewer than 2<sup>n</sup> nodes thanks to pruning, and greedy gives up a little quality for speed.</p></div>
+            <button class="btn" id="rebench" type="button">Run benchmark again</button></div>
+          <div class="sliders">
+            <div class="field"><div class="rowlbl"><label for="bT">Instances per size</label><output id="bTo"></output></div><input type="range" id="bT" min="10" max="120" step="10"></div>
+          </div>
+        </div>
+        <div class="two">
+          <div class="glass card"><div class="head" style="margin-bottom:8px"><div><div class="eyebrow">Search effort</div><h3>Nodes explored vs the 2<sup>n</sup> worst case</h3></div></div><div class="legend" id="lg1"></div><div id="ch1"></div><div id="ch1t"></div></div>
+          <div class="glass card"><div class="head" style="margin-bottom:8px"><div><div class="eyebrow">Solution quality</div><h3>Greedy score as a share of the optimum</h3></div></div><div class="legend" id="lg2"></div><div id="ch2"></div><div id="ch2t"></div></div>
+        </div>
+        <div class="glass card"><div class="head" style="margin-bottom:8px"><div><div class="eyebrow">Running time</div><h3>Average time per run (ms, log scale)</h3></div></div><div class="legend" id="lg3"></div><div id="ch3"></div><div id="ch3t"></div></div>
+        <div class="glass card">
+          <div class="head"><div><div class="eyebrow">From the report</div><h2>Complexity summary</h2></div></div>
+          <div class="tscroll"><table>
+            <thead><tr><th>Operation</th><th>Time</th><th>Explanation</th></tr></thead>
+            <tbody>
+              <tr><td>Priority sorting</td><td class="num">O(R log R)</td><td>Comparison sort of R requests</td></tr>
+              <tr><td>Prerequisite and credit checks</td><td class="num">O(1) each</td><td>Indexed student and course records</td></tr>
+              <tr><td>Timetable check</td><td class="num">O(k) each</td><td>Compare with k existing meetings</td></tr>
+              <tr><td>Seat availability</td><td class="num">O(1) each</td><td>Read and update a section counter</td></tr>
+              <tr><td>Greedy overall</td><td class="num">O(R log R + Rk)</td><td>Sorting plus all feasibility checks</td></tr>
+              <tr><td>Backtracking worst case</td><td class="num">O(2<sup>n</sup>)</td><td>Include or exclude each of n courses; pruning cuts the practical search</td></tr>
+              <tr><td>Auxiliary storage</td><td class="num">O(R + K)</td><td>Request order and stored schedules</td></tr>
+            </tbody></table></div>
+        </div>
+        <div class="two">
+          <div class="glass card"><div class="eyebrow" style="margin-bottom:8px">Pseudocode</div><h3 style="margin-bottom:10px">GREEDY-REGISTER</h3>
+<pre class="code"><b>sort</b> requests by priority descending
+<b>for each</b> request r:
+    <b>if</b> prerequisites not met        → reject
+    <b>if</b> credits + r.credits &gt; max   → reject
+    <b>if</b> overlaps existing meetings   → reject
+    <b>if</b> section has no seats         → waitlist
+    accept r; update credits, schedule, seats</pre></div>
+          <div class="glass card"><div class="eyebrow" style="margin-bottom:8px">Pseudocode</div><h3 style="margin-bottom:10px">BACKTRACK with pruning</h3>
+<pre class="code">search(i, credits, value):
+    <b>if</b> i = n: record best solution; <b>return</b>
+    <b>if</b> credits + remaining &lt; min: <b>return</b>   // prune
+    <b>if</b> value + remaining ≤ best:   <b>return</b>   // bound
+    <b>if</b> course i fits (credits, no clash):
+        include i; search(i+1, ...); undo i
+    search(i+1, credits, value)    // exclude i</pre></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <p class="foot">Interval overlap rule: A and B clash when A.start &lt; B.end and B.start &lt; A.end. Back-to-back classes are allowed.</p>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+
+<script src="js/engine.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/scenarios.js"></script>
+<script src="js/state.js"></script>
+<script src="js/tooltip.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/theme.js"></script>
+<script src="js/planner.js"></script>
+<script src="js/graph.js"></script>
+<script src="js/batch.js"></script>
+<script src="js/analysis.js"></script>
+<script src="js/events.js"></script>
+<script src="js/replay.js"></script>
+<script src="js/course-form.js"></script>
+<script src="js/copy-plan.js"></script>
+<script src="js/extras.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

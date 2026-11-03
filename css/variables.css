@@ -1,0 +1,50 @@
+/* Layout concept: one glass dashboard over a soft aurora; planner left, live results right. Palette follows the PPT: navy, teal, blue, indigo. */
+:root{
+  --font-display:'Bricolage Grotesque',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-body:'Instrument Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --font-mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
+  --bg:#e8eff9;
+  --blob1:rgba(16,186,196,.40); --blob2:rgba(98,80,214,.28); --blob3:rgba(42,120,214,.32);
+  --glass:rgba(255,255,255,.56); --glass-2:rgba(255,255,255,.72); --glass-edge:rgba(255,255,255,.88);
+  --glass-shadow:0 10px 34px rgba(28,58,110,.14); --glass-hi:rgba(255,255,255,.7);
+  --line:rgba(20,44,86,.13); --grid:rgba(20,44,86,.09);
+  --ink:#0b1a2f; --ink2:#3f5069; --muted:#586882;
+  --accent:#067a85; --accent-on:#ffffff; --accent-soft:rgba(6,122,133,.14);
+  --good:#0ca30c; --good-ink:#066306; --warn:#fab219; --warn-ink:#865000; --bad:#d03b3b; --bad-ink:#a42323;
+  --halo:rgba(232,239,249,.92); --field:rgba(255,255,255,.78); --trk:rgba(20,44,86,.10);
+  --s1:#2a78d6; --s2:#eb6834; --s3:#1baf7a; --s4:#eda100; --s5:#e87ba4; --s6:#008300; --s7:#6250d6; --s8:#e34948;
+  --on1:#fff; --on2:#fff; --on3:#fff; --on4:#0b0b0b; --on5:#fff; --on6:#fff; --on7:#fff; --on8:#fff;
+  --tip-bg:rgba(255,255,255,.94); --tip-ink:#0b1a2f;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#060d1f;
+    --blob1:rgba(30,200,190,.24); --blob2:rgba(98,80,214,.34); --blob3:rgba(42,120,214,.30);
+    --glass:rgba(16,28,56,.56); --glass-2:rgba(22,38,74,.62); --glass-edge:rgba(255,255,255,.13);
+    --glass-shadow:0 14px 40px rgba(0,0,0,.42); --glass-hi:rgba(255,255,255,.08);
+    --line:rgba(255,255,255,.12); --grid:rgba(255,255,255,.08);
+    --ink:#eaf1ff; --ink2:#b0bdd5; --muted:#8c9cb8;
+    --accent:#38d3cb; --accent-on:#042329; --accent-soft:rgba(56,211,203,.16);
+    --good:#0ca30c; --good-ink:#4fd34f; --warn:#fab219; --warn-ink:#fab219; --bad:#d03b3b; --bad-ink:#ff8080;
+    --halo:rgba(6,13,31,.9); --field:rgba(8,18,40,.6); --trk:rgba(255,255,255,.10);
+    --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+    --on4:#fff;
+    --tip-bg:rgba(14,26,52,.95); --tip-ink:#eaf1ff;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#060d1f;
+  --blob1:rgba(30,200,190,.24); --blob2:rgba(98,80,214,.34); --blob3:rgba(42,120,214,.30);
+  --glass:rgba(16,28,56,.56); --glass-2:rgba(22,38,74,.62); --glass-edge:rgba(255,255,255,.13);
+  --glass-shadow:0 14px 40px rgba(0,0,0,.42); --glass-hi:rgba(255,255,255,.08);
+  --line:rgba(255,255,255,.12); --grid:rgba(255,255,255,.08);
+  --ink:#eaf1ff; --ink2:#b0bdd5; --muted:#8c9cb8;
+  --accent:#38d3cb; --accent-on:#042329; --accent-soft:rgba(56,211,203,.16);
+  --good:#0ca30c; --good-ink:#4fd34f; --warn:#fab219; --warn-ink:#fab219; --bad:#d03b3b; --bad-ink:#ff8080;
+  --halo:rgba(6,13,31,.9); --field:rgba(8,18,40,.6); --trk:rgba(255,255,255,.10);
+  --s1:#3987e5; --s2:#d95926; --s3:#199e70; --s4:#c98500; --s5:#d55181; --s6:#008300; --s7:#9085e9; --s8:#e66767;
+  --on4:#fff;
+  --tip-bg:rgba(14,26,52,.95); --tip-ink:#eaf1ff;
+  color-scheme:dark;
+}

@@ -1,0 +1,27 @@
+/* ============ Charts + data tables ============ */
+.chart { width: 100%; height: auto; display: block; overflow: visible; }
+.chart .grid { stroke: var(--grid); stroke-width: 1; }
+.chart .base { stroke: var(--border-strong); stroke-width: 1; }
+.chart .ax { fill: var(--muted); font: 500 11px var(--font-mono); }
+.chart .axl { fill: var(--ink2); font: 600 11px var(--font-body); }
+.chart .val { fill: var(--ink); font: 600 11px var(--font-mono); }
+.chart .trkr { fill: var(--trk); }
+.chart .hit { fill: transparent; }
+.chart .cross { stroke: var(--primary); stroke-width: 1; stroke-dasharray: 3 3; opacity: 0; transition: opacity var(--transition); }
+.chart .dot { opacity: 0; transition: opacity var(--transition); }
+.chart .col:hover .cross, .chart .col:hover .dot { opacity: 1; }
+
+.tbl { margin-top: 12px; border-top: 1px dashed var(--border); padding-top: 10px; }
+.tbl > summary { cursor: pointer; font-size: .78rem; color: var(--primary-ink); font-weight: 600; }
+.tscroll { overflow-x: auto; margin-top: 10px; }
+.tscroll table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+.tscroll th, .tscroll td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); }
+.tscroll th { color: var(--muted); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
+.tscroll td.num, .tscroll th.num { text-align: right; font-family: var(--font-mono); }
+
+pre.code {
+  background: var(--surface-2); border: 1px solid var(--border); border-radius: 11px;
+  padding: 14px; margin: 0; overflow-x: auto; font-family: var(--font-mono); font-size: .78rem;
+  line-height: 1.75; color: var(--ink2);
+}
+pre.code b { color: var(--primary-ink); font-weight: 700; }

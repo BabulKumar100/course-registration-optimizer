@@ -1,0 +1,24 @@
+/* header */
+.top{display:flex;align-items:center;gap:14px;padding:14px 18px;flex-wrap:wrap}
+.logo{width:42px;height:42px;flex:none}
+.titles{min-width:0;flex:1 1 240px}
+.titles h1{font-size:clamp(20px,3.4vw,28px);line-height:1.1}
+.titles p{margin:3px 0 0;color:var(--ink2);font-size:13px}
+.iconbtn{
+  display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-radius:999px;cursor:pointer;
+  background:var(--field);color:var(--ink);border:1px solid var(--line);font:600 13px var(--font-body);
+}
+.iconbtn:hover{border-color:var(--accent)}
+.iconbtn svg{width:18px;height:18px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* tabs & segmented */
+.tabs{display:flex;gap:4px;padding:6px;border-radius:999px;overflow-x:auto;scrollbar-width:none;align-self:flex-start;max-width:100%}
+.tabs::-webkit-scrollbar{display:none}
+.tab{border:0;background:transparent;color:var(--ink2);font:600 14px var(--font-body);padding:9px 18px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink)}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-on);box-shadow:0 4px 14px rgba(6,122,133,.35)}
+.seg{display:inline-flex;padding:3px;border-radius:999px;background:var(--field);border:1px solid var(--line)}
+.seg button{border:0;background:transparent;color:var(--ink2);font:600 13px var(--font-body);padding:6px 14px;border-radius:999px;cursor:pointer;white-space:nowrap}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-on)}
+

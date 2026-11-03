@@ -1,0 +1,32 @@
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body); font-size:15px; line-height:1.5;
+  padding-block:20px 40px;
+  padding-left:max(16px,env(safe-area-inset-left,0px)); padding-right:max(16px,env(safe-area-inset-right,0px));
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
+}
+.bg{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg i{position:absolute;border-radius:50%;filter:blur(70px);will-change:transform}
+.bg .b1{width:52vmax;height:52vmax;left:-14vmax;top:-18vmax;background:var(--blob1);animation:drift1 26s ease-in-out infinite alternate}
+.bg .b2{width:46vmax;height:46vmax;right:-14vmax;top:12vh;background:var(--blob2);animation:drift2 30s ease-in-out infinite alternate}
+.bg .b3{width:50vmax;height:50vmax;left:18vw;bottom:-26vmax;background:var(--blob3);animation:drift1 34s ease-in-out infinite alternate-reverse}
+@keyframes drift1{to{transform:translate(6vmax,4vmax) scale(1.08)}}
+@keyframes drift2{to{transform:translate(-5vmax,6vmax) scale(.94)}}
+@media (prefers-reduced-motion: reduce){.bg i{animation:none}*{transition:none!important}}
+
+.app{max-width:1280px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.glass{
+  background:var(--glass); border:1px solid var(--glass-edge); border-radius:20px;
+  box-shadow:var(--glass-shadow), inset 0 1px 0 var(--glass-hi);
+  -webkit-backdrop-filter:blur(18px) saturate(150%); backdrop-filter:blur(18px) saturate(150%);
+}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){ .glass{background:var(--glass-2)} }
+.card{padding:18px 20px;min-width:0}
+h1,h2,h3{font-family:var(--font-display);margin:0;font-weight:650;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:18px}
+h3{font-size:15px}
+.eyebrow{font-size:11px;font-weight:650;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.sub{color:var(--ink2);font-size:13.5px;margin:2px 0 0}
+

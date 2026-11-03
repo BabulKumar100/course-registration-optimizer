@@ -1,0 +1,92 @@
+/* ============ Design tokens: Modern SaaS Dashboard ============ */
+:root {
+  --font-display: 'Bricolage Grotesque', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --bg: #F8FAFC;
+  --bg-soft: #EEF2F7;
+  --surface: #FFFFFF;
+  --surface-2: #F1F5F9;
+  --surface-3: #E9EEF5;
+  --border: #E2E8F0;
+  --border-strong: #CBD5E1;
+
+  --ink: #0F172A;
+  --ink2: #334155;
+  --muted: #64748B;
+  --muted-2: #94A3B8;
+
+  --primary: #2563EB;
+  --primary-ink: #1D4ED8;
+  --primary-soft: #EFF6FF;
+  --primary-on: #FFFFFF;
+  --primary-ring: rgba(37, 99, 235, .28);
+
+  --good: #0D9488; --good-ink: #0F766E; --good-soft: #ECFDF5;
+  --warn: #D97706; --warn-ink: #B45309; --warn-soft: #FFFBEB;
+  --bad: #DC2626; --bad-ink: #B91C1C; --bad-soft: #FEF2F2;
+
+  --grid: rgba(15, 23, 42, .08);
+  --halo: #FFFFFF;
+  --field: #FFFFFF;
+  --trk: #F1F5F9;
+  --tip-bg: rgba(15, 23, 42, .95);
+  --tip-ink: #F8FAFC;
+
+  --s1: #2563EB; --s2: #7C3AED; --s3: #0D9488; --s4: #D97706;
+  --s5: #DB2777; --s6: #059669; --s7: #4F46E5; --s8: #DC2626;
+  --on1: #fff; --on2: #fff; --on3: #fff; --on4: #231400; --on5: #fff; --on6: #fff; --on7: #fff; --on8: #fff;
+
+  --radius-sm: 8px;
+  --radius: 14px;
+  --radius-lg: 20px;
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, .06);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, .08), 0 1px 2px rgba(15, 23, 42, .04);
+  --shadow-md: 0 4px 14px rgba(15, 23, 42, .08);
+  --shadow-lg: 0 14px 36px rgba(15, 23, 42, .14);
+  --transition: .2s cubic-bezier(.4, 0, .2, 1);
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #0B1220;
+  --bg-soft: #0E1729;
+  --surface: #111A2E;
+  --surface-2: #17223B;
+  --surface-3: #1E2B47;
+  --border: #243049;
+  --border-strong: #33415C;
+
+  --ink: #E8EEF9;
+  --ink2: #B4C0D6;
+  --muted: #8595B0;
+  --muted-2: #64748B;
+
+  --primary: #3B82F6;
+  --primary-ink: #93C5FD;
+  --primary-soft: rgba(59, 130, 246, .16);
+  --primary-on: #FFFFFF;
+  --primary-ring: rgba(59, 130, 246, .38);
+
+  --good: #14B8A6; --good-ink: #5EEAD4; --good-soft: rgba(20, 184, 166, .15);
+  --warn: #F59E0B; --warn-ink: #FCD34D; --warn-soft: rgba(245, 158, 11, .15);
+  --bad: #F87171; --bad-ink: #FCA5A5; --bad-soft: rgba(248, 113, 113, .15);
+
+  --grid: rgba(255, 255, 255, .08);
+  --halo: #0B1220;
+  --field: #0E1729;
+  --trk: rgba(255, 255, 255, .08);
+  --tip-bg: rgba(6, 12, 26, .96);
+  --tip-ink: #E8EEF9;
+
+  --s1: #60A5FA; --s2: #A78BFA; --s3: #2DD4BF; --s4: #FBBF24;
+  --s5: #F472B6; --s6: #34D399; --s7: #818CF8; --s8: #F87171;
+  --on1: #0B1220; --on2: #0B1220; --on3: #0B1220; --on4: #0B1220; --on5: #0B1220; --on6: #0B1220; --on7: #0B1220; --on8: #0B1220;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, .45);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, .5);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}

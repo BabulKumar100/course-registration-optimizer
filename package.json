@@ -1,0 +1,9 @@
+{
+  "name": "course-registration-optimizer",
+  "version": "1.0.0",
+  "description": "Frontend project: greedy and backtracking course registration with a timetable conflict graph",
+  "private": true,
+  "scripts": {
+    "start": "npx serve ."
+  }
+}

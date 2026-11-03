@@ -1,0 +1,10 @@
+/* layout */
+.view[hidden]{display:none}
+.planner{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:16px;align-items:start}
+.col{display:flex;flex-direction:column;gap:16px;min-width:0}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:1020px){.planner{grid-template-columns:minmax(0,1fr)}}
+@media (max-width:760px){.two,.three{grid-template-columns:minmax(0,1fr)}}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+
