@@ -324,3 +324,7 @@ The production build is a fully static bundle, so it can be hosted anywhere that
 | Charts and graph | Hand-drawn SVG |
 
 The project intentionally ships with **zero runtime dependencies beyond React** — every chart, graph, and animation is written from scratch.
+
+## License
+
+This project is released under the MIT License. See the [LICENSE](LICENSE) file for details.
